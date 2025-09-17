@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package danRulev.task_grpc;
 
-option go_package = "gen/go/task;taskgrpc";
+option go_package = "github.com/DanRulev/api-contracts/gen/go/task;taskgrpc";
 
 import "google/protobuf/empty.proto";
 

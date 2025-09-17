@@ -4,7 +4,7 @@ package danRulev.group_member_grpc;
 
 import "google/protobuf/empty.proto";
 
-option go_package = "gen/go/group/member;gmembergrpc";
+option go_package = "github.com/DanRulev/api-contracts/gen/go/group/member;gmembergrpc";
 
 service GroupMemberService{ 
     rpc AddMember(AddMemberRequest) returns (google.protobuf.Empty);

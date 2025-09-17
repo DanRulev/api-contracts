@@ -4,7 +4,7 @@ package danRulev.group_grpc;
 
 import "google/protobuf/empty.proto";
 
-option go_package = "gen/go/group/group;groupgrpc";
+option go_package = "github.com/DanRulev/api-contracts/gen/go/group/group;groupgrpc";
 
 service GroupService{
     rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse);
