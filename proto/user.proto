@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package danRulev.user_grpc;
+
+option go_package = "gen/go/user;usergrpc";
+
+service UserService{
+    rpc User(UserRequest) returns (UserResponse);
+    rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
+    rpc PublicUser(UserRequest) returns (UserResponse);
+    rpc BatchUsers(BatchUsersRequest) returns (BatchUsersResponse);
+}
+
+message UserRequest{
+    string user_id = 1;
+}
+
+message UserResponse{ 
+    string id = 1;
+    string username = 2;
+    optional string first_name = 3;
+    optional string last_name = 4;
+    optional string avatar_url = 5;
+    optional string bio = 6;
+    optional string created_at = 7;
+    optional string updated_at = 8;
+    bool private_account = 9;
+    bool private_groups = 10;
+    bool private_tasks = 11;
+    bool notifications = 12;
+}
+
+message UpdateUserRequest{ 
+    string user_id = 1;
+}
+
+message UpdateParamsRequest{
+    optional string username = 1;
+    optional string first_name = 2;
+    optional string last_name = 3;
+    optional string avatar_url = 4;
+    optional string bio = 5;
+    optional bool private_account = 6;
+    optional bool private_groups = 7;
+    optional bool private_tasks = 8;
+    optional bool notifications = 9;
+}
+
+message BatchUsersRequest{ 
+    repeated string user_ids = 1;
+}
+
+message BatchUsersResponse{ 
+    repeated UserResponse users = 1;
+}
+
+
+

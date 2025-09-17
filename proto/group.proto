@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package danRulev.group_grpc;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "gen/go/group/group;groupgrpc";
+
+service GroupService{
+    rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse);
+    rpc UserGroups(GroupsRequest) returns (GroupsResponse);
+    rpc Group(GroupRequest) returns (GroupResponse);
+    rpc UpdateGroup(UpdateGroupRequest) returns (GroupResponse);
+    rpc DeleteGroup(GroupRequest) returns (google.protobuf.Empty);
+}
+
+message CreateGroupRequest{ 
+    string user_id = 1;
+    CreateGroupParams group = 2;
+}
+
+message CreateGroupResponse{ 
+    string id = 1;
+}
+
+message CreateGroupParams{ 
+    string name = 1;
+    string description = 2;
+    optional string image_url = 3;
+}
+
+message GroupsRequest{ 
+    string user_id = 1;
+    PaginationRequest pagination = 2;
+}
+
+message PaginationRequest{
+    string sort = 1;
+    string order = 2;
+    int64 limit = 3;
+    int64 offset = 4;
+}
+
+message GroupsResponse{ 
+    repeated GroupResponse groups = 1;
+    PaginationResponse pagination = 2;
+}
+
+message GroupResponse{ 
+    string id = 1;
+    string creator_id = 2;
+    string name = 3;
+    string description = 4;
+    string image_url = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message PaginationResponse{
+    int64 total = 1;
+    int64 page = 2;
+    int64 limit = 3;
+    int64 total_pages = 4;
+}
+
+message GroupRequest{ 
+    string user_id = 1;
+    string group_id = 2;
+}
+
+message UpdateGroupRequest{ 
+    string user_id = 1;
+    string group_id = 2;
+    UpdateGroupParams group = 3;
+}
+
+message UpdateGroupParams{ 
+    optional string name = 1;
+    optional string description = 2;
+    optional string image_url = 3;
+}
+
+

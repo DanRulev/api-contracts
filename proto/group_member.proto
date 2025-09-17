@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package danRulev.group_member_grpc;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "gen/go/group/member;gmembergrpc";
+
+service GroupMemberService{ 
+    rpc AddMember(AddMemberRequest) returns (google.protobuf.Empty);
+    rpc UpdateMember(UpdateMemberRequest) returns (MemberResponse);
+    rpc GroupMember(GroupMemberRequest) returns (MemberResponse);
+    rpc GroupMembers(GroupMembersRequest) returns (GroupMembersResponse);
+    rpc DeleteMember(DeleteMemberRequest) returns (google.protobuf.Empty);
+}
+
+message AddMemberRequest{ 
+    string group_id = 1;
+    AddMemberParams member = 2;
+}
+
+message AddMemberParams{ 
+    string user_id = 1;
+    string supervisor_id = 2;
+    string role = 3;
+}
+
+message UpdateMemberRequest{ 
+    string group_id = 1;
+    string updater_id = 2;
+    string member_id = 3;
+    UpdateMemberParams member = 4;
+}
+
+message UpdateMemberParams{ 
+    optional string supervisor_id = 1;
+    optional string role = 2;
+    optional int32 level = 3;
+}
+
+message MemberResponse{ 
+    string user_id = 1;
+    string role = 2;
+    int32 level = 3;
+    string supervisor_id = 4;
+    string created_at = 5;
+    string updated_at = 6;
+}
+
+message GroupMemberRequest{
+    string group_id = 1;
+    string user_id = 2;
+}
+
+message GroupMembersRequest{ 
+    string group_id = 1;
+    PaginationRequest pagination = 2;
+}
+
+message PaginationRequest{
+    string sort = 1;
+    string order = 2;
+    int64 limit = 3;
+    int64 offset = 4;
+}
+
+message GroupMembersResponse{ 
+    repeated MemberResponse members = 1;
+    PaginationResponse pagination = 2;
+}
+
+message PaginationResponse{ 
+    int64 total = 1;
+    int64 page = 2;
+    int64 limit = 3;
+    int64 total_pages = 4;
+    bool has_next_page = 5;
+    bool has_previous_page = 6;
+}
+
+message DeleteMemberRequest{ 
+    string remover_id = 1;
+    string user_id = 2;
+    string group_id = 3;
+}
+
