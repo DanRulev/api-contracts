@@ -1,4 +1,4 @@
-module github.com/DanRulev/api-contracts/gen
+module github.com/DanRulev/api-contracts
 
 go 1.25.0
 
