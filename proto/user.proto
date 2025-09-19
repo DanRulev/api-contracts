@@ -32,6 +32,7 @@ message UserResponse{
 
 message UpdateUserRequest{ 
     string user_id = 1;
+    UpdateParamsRequest params = 2;
 }
 
 message UpdateParamsRequest{
@@ -51,7 +52,13 @@ message BatchUsersRequest{
 }
 
 message BatchUsersResponse{ 
-    repeated UserResponse users = 1;
+    repeated ShortUserResponse users = 1;
+}
+
+message ShortUserResponse{ 
+    string id = 1;
+    string username = 2;
+    string avatar_url = 3;
 }
 
 
