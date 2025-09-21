@@ -42,8 +42,17 @@ message PaginationRequest{
 }
 
 message GroupsResponse{ 
-    repeated GroupResponse groups = 1;
+    repeated UserGroupResponse groups = 1;
     PaginationResponse pagination = 2;
+}
+
+message UserGroupResponse{ 
+    string group_id = 1;
+    string name = 2;
+    optional string image_url = 3;
+    string level = 4;
+    string role = 5;
+    optional string supervisor_id = 6;
 }
 
 message GroupResponse{ 

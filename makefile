@@ -1,3 +1,6 @@
+gen-auth:
+	protoc -I proto proto/auth.proto --go_out=./gen/go/auth/ --go_opt=paths=source_relative --go-grpc_out=./gen/go/auth/ --go-grpc_opt=paths=source_relative
+
 gen-user:
 	protoc -I proto proto/user.proto --go_out=./gen/go/user/ --go_opt=paths=source_relative --go-grpc_out=./gen/go/user/ --go-grpc_opt=paths=source_relative
 
@@ -10,6 +13,6 @@ gen-group:
 gen-group-members:
 	protoc -I proto proto/group_member.proto --go_out=./gen/go/group/member/ --go_opt=paths=source_relative --go-grpc_out=./gen/go/group/member/ --go-grpc_opt=paths=source_relative
 
-gen: gen-user gen-task gen-group gen-group-members
+gen: gen-auth gen-user gen-task gen-group gen-group-members
 
-.PHONY: gen-user gen-task gen-group gen-group-members gen
+.PHONY: gen-auth gen-user gen-task gen-group gen-group-members gen

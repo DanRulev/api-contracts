@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package danRulev.auth_grpc;
+
+option go_package = "github.com/DanRulev/api-contracts/gen/go/auth;authgrpc";
+
+service AuthService{ 
+    rpc Register(RegisterRequest) returns (RegisterResponse);
+    rpc Login(LoginRequest) returns (LoginResponse);
+    rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
+    rpc Refresh(RefreshRequest) returns (LoginResponse);
+    rpc Delete(DeleteRequest) returns (google.protobuf.Empty);
+    rpc Restore(RegisterRequest) returns (RegisterResponse);
+}
+
+message RegisterRequest{ 
+    string username = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message RegisterResponse{ 
+    string id = 1;
+}
+
+message LoginRequest{ 
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse{ 
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message LogoutRequest{ 
+    string refresh_token = 1;
+}
+
+message RefreshRequest{ 
+    string refresh_token = 1;
+}
+
+message DeleteRequest {
+    string user_id = 1;
+    string refresh_token = 2;
+}
+
+
