@@ -12,7 +12,7 @@ service AuthService{
     rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
     rpc Refresh(RefreshRequest) returns (LoginResponse);
     rpc Delete(DeleteRequest) returns (google.protobuf.Empty);
-    rpc Restore(RegisterRequest) returns (RegisterResponse);
+    rpc Restore(RegisterRequest) returns (google.protobuf.Empty);
 }
 
 message RegisterRequest{ 

@@ -23,7 +23,7 @@ type AuthServiceClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Restore(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	Restore(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authServiceClient struct {
@@ -79,8 +79,8 @@ func (c *authServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts 
 	return out, nil
 }
 
-func (c *authServiceClient) Restore(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
-	out := new(RegisterResponse)
+func (c *authServiceClient) Restore(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/danRulev.auth_grpc.AuthService/Restore", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ type AuthServiceServer interface {
 	Logout(context.Context, *LogoutRequest) (*emptypb.Empty, error)
 	Refresh(context.Context, *RefreshRequest) (*LoginResponse, error)
 	Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error)
-	Restore(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	Restore(context.Context, *RegisterRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -120,7 +120,7 @@ func (UnimplementedAuthServiceServer) Refresh(context.Context, *RefreshRequest) 
 func (UnimplementedAuthServiceServer) Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedAuthServiceServer) Restore(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+func (UnimplementedAuthServiceServer) Restore(context.Context, *RegisterRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Restore not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}

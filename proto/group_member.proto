@@ -21,7 +21,7 @@ message AddMemberRequest{
 
 message AddMemberParams{ 
     string user_id = 1;
-    string supervisor_id = 2;
+    optional string supervisor_id = 2;
     string role = 3;
 }
 
@@ -42,7 +42,7 @@ message MemberResponse{
     string user_id = 1;
     string role = 2;
     int32 level = 3;
-    string supervisor_id = 4;
+    optional string supervisor_id = 4;
     string created_at = 5;
     string updated_at = 6;
 }
