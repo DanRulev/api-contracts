@@ -7,27 +7,21 @@ package danRulev.auth_grpc;
 option go_package = "github.com/DanRulev/api-contracts/gen/go/auth;authgrpc";
 
 service AuthService{ 
-    rpc Register(RegisterRequest) returns (RegisterResponse);
-    rpc Login(LoginRequest) returns (LoginResponse);
+    rpc Register(AuthRequest) returns (RegisterResponse);
+    rpc Login(AuthRequest) returns (LoginResponse);
     rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
     rpc Refresh(RefreshRequest) returns (LoginResponse);
     rpc Delete(DeleteRequest) returns (google.protobuf.Empty);
-    rpc Restore(RegisterRequest) returns (google.protobuf.Empty);
+    rpc Restore(AuthRequest) returns (google.protobuf.Empty);
 }
 
-message RegisterRequest{ 
-    string username = 1;
-    string email = 2;
-    string password = 3;
+message AuthRequest{ 
+    string email = 1;
+    string password = 2;
 }
 
 message RegisterResponse{ 
     string id = 1;
-}
-
-message LoginRequest{ 
-    string email = 1;
-    string password = 2;
 }
 
 message LoginResponse{ 

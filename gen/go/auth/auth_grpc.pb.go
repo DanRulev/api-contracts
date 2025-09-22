@@ -18,12 +18,12 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
-	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	Register(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	Login(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Restore(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Restore(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authServiceClient struct {
@@ -34,7 +34,7 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
 }
 
-func (c *authServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+func (c *authServiceClient) Register(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
 	out := new(RegisterResponse)
 	err := c.cc.Invoke(ctx, "/danRulev.auth_grpc.AuthService/Register", in, out, opts...)
 	if err != nil {
@@ -43,7 +43,7 @@ func (c *authServiceClient) Register(ctx context.Context, in *RegisterRequest, o
 	return out, nil
 }
 
-func (c *authServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+func (c *authServiceClient) Login(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, "/danRulev.auth_grpc.AuthService/Login", in, out, opts...)
 	if err != nil {
@@ -79,7 +79,7 @@ func (c *authServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts 
 	return out, nil
 }
 
-func (c *authServiceClient) Restore(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *authServiceClient) Restore(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/danRulev.auth_grpc.AuthService/Restore", in, out, opts...)
 	if err != nil {
@@ -92,12 +92,12 @@ func (c *authServiceClient) Restore(ctx context.Context, in *RegisterRequest, op
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
-	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
-	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	Register(context.Context, *AuthRequest) (*RegisterResponse, error)
+	Login(context.Context, *AuthRequest) (*LoginResponse, error)
 	Logout(context.Context, *LogoutRequest) (*emptypb.Empty, error)
 	Refresh(context.Context, *RefreshRequest) (*LoginResponse, error)
 	Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error)
-	Restore(context.Context, *RegisterRequest) (*emptypb.Empty, error)
+	Restore(context.Context, *AuthRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -105,10 +105,10 @@ type AuthServiceServer interface {
 type UnimplementedAuthServiceServer struct {
 }
 
-func (UnimplementedAuthServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+func (UnimplementedAuthServiceServer) Register(context.Context, *AuthRequest) (*RegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedAuthServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+func (UnimplementedAuthServiceServer) Login(context.Context, *AuthRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
 func (UnimplementedAuthServiceServer) Logout(context.Context, *LogoutRequest) (*emptypb.Empty, error) {
@@ -120,7 +120,7 @@ func (UnimplementedAuthServiceServer) Refresh(context.Context, *RefreshRequest) 
 func (UnimplementedAuthServiceServer) Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedAuthServiceServer) Restore(context.Context, *RegisterRequest) (*emptypb.Empty, error) {
+func (UnimplementedAuthServiceServer) Restore(context.Context, *AuthRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Restore not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
@@ -137,7 +137,7 @@ func RegisterAuthServiceServer(s *grpc.Server, srv AuthServiceServer) {
 }
 
 func _AuthService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterRequest)
+	in := new(AuthRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -149,13 +149,13 @@ func _AuthService_Register_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/danRulev.auth_grpc.AuthService/Register",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Register(ctx, req.(*RegisterRequest))
+		return srv.(AuthServiceServer).Register(ctx, req.(*AuthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
+	in := new(AuthRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func _AuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/danRulev.auth_grpc.AuthService/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Login(ctx, req.(*LoginRequest))
+		return srv.(AuthServiceServer).Login(ctx, req.(*AuthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -227,7 +227,7 @@ func _AuthService_Delete_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _AuthService_Restore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterRequest)
+	in := new(AuthRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -239,7 +239,7 @@ func _AuthService_Restore_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/danRulev.auth_grpc.AuthService/Restore",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Restore(ctx, req.(*RegisterRequest))
+		return srv.(AuthServiceServer).Restore(ctx, req.(*AuthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
