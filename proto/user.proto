@@ -12,7 +12,7 @@ service UserService{
     rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
     rpc PublicUser(UserRequest) returns (UserResponse);
     rpc BatchUsers(BatchUsersRequest) returns (BatchUsersResponse);
-    rpc RestoreUser(UserRequest) returns (UserResponse);
+    rpc RestoreUser(UserRequest) returns (google.protobuf.Empty);
     rpc DeleteUser(UserRequest) returns (google.protobuf.Empty);
 }
 

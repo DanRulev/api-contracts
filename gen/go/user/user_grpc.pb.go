@@ -23,7 +23,7 @@ type UserServiceClient interface {
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	PublicUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	BatchUsers(ctx context.Context, in *BatchUsersRequest, opts ...grpc.CallOption) (*BatchUsersResponse, error)
-	RestoreUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	RestoreUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -80,8 +80,8 @@ func (c *userServiceClient) BatchUsers(ctx context.Context, in *BatchUsersReques
 	return out, nil
 }
 
-func (c *userServiceClient) RestoreUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
+func (c *userServiceClient) RestoreUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/danRulev.user_grpc.UserService/RestoreUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ type UserServiceServer interface {
 	UpdateUser(context.Context, *UpdateUserRequest) (*UserResponse, error)
 	PublicUser(context.Context, *UserRequest) (*UserResponse, error)
 	BatchUsers(context.Context, *BatchUsersRequest) (*BatchUsersResponse, error)
-	RestoreUser(context.Context, *UserRequest) (*UserResponse, error)
+	RestoreUser(context.Context, *UserRequest) (*emptypb.Empty, error)
 	DeleteUser(context.Context, *UserRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -131,7 +131,7 @@ func (UnimplementedUserServiceServer) PublicUser(context.Context, *UserRequest) 
 func (UnimplementedUserServiceServer) BatchUsers(context.Context, *BatchUsersRequest) (*BatchUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchUsers not implemented")
 }
-func (UnimplementedUserServiceServer) RestoreUser(context.Context, *UserRequest) (*UserResponse, error) {
+func (UnimplementedUserServiceServer) RestoreUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RestoreUser not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
