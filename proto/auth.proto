@@ -30,11 +30,13 @@ message LoginResponse{
 }
 
 message LogoutRequest{ 
-    string refresh_token = 1;
+    string user_id = 1;
+    string refresh_token = 2;
 }
 
-message RefreshRequest{ 
-    string refresh_token = 1;
+message RefreshRequest{
+    string user_id = 1; 
+    string refresh_token = 2;
 }
 
 message DeleteRequest {

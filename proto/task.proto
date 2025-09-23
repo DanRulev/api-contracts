@@ -12,6 +12,7 @@ service TaskService{
     rpc Tasks(TasksRequest) returns (TasksResponse);
     rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse);
     rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty);
+    rpc Stats(StatsRequest) returns (StatsResponse);
 }
 
 message CreateTaskRequest{ 
@@ -51,7 +52,12 @@ message TaskResponse{
     string updated_at = 11;
 }
 
-message TasksRequest{ 
+message TasksRequest{
+    optional string group_id = 1;
+    TasksFilterParams filter = 2;
+}
+
+message TasksFilterParams{
     string sort = 1;
     string order = 2;
     int64 limit = 3;
@@ -93,4 +99,26 @@ message UpdateTaskParams{
 message DeleteTaskRequest{ 
     string task_id = 1;
     string user_id = 2;
+}
+
+message StatsRequest{
+    string user_id = 1;
+    optional string group_id = 2;
+    StatsParams params = 3;
+}
+
+message StatsParams{
+    optional string priority = 1;
+    optional string start_period = 2;
+    optional string end_period = 3;
+}
+
+message StatsResponse{ 
+    int64 total = 1;
+    int64 completed = 2;
+    int64 in_progress = 3;
+    int64 pending = 4;
+    int64 cancelled = 5;
+    int64 overdue = 6;
+    float completion_rate = 7;
 }
