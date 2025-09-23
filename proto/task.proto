@@ -71,7 +71,7 @@ message TasksFilterParams{
 }
 
 message TasksResponse{ 
-    repeated TaskResponse tasks = 1;
+    repeated ShortTaskResponse tasks = 1;
     PaginationResponse pagination = 2;
 }  
 
@@ -79,10 +79,9 @@ message ShortTaskResponse{
     string id = 1;
     string group_id = 2;
     string title = 3;
-    string description = 4;
-    string status = 5;
-    string priority = 6;
-    string deadline = 7;
+    string status = 4;
+    string priority = 5;
+    string deadline = 6;
 }
 
 message PaginationResponse{ 
