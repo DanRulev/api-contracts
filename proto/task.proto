@@ -75,6 +75,16 @@ message TasksResponse{
     PaginationResponse pagination = 2;
 }  
 
+message ShortTaskResponse{ 
+    string id = 1;
+    string group_id = 2;
+    string title = 3;
+    string description = 4;
+    string status = 5;
+    string priority = 6;
+    string deadline = 7;
+}
+
 message PaginationResponse{ 
     int64 total = 1;
     int64 page = 2;
