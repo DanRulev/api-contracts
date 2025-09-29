@@ -69,8 +69,13 @@ message PaginationRequest{
 }
 
 message GroupMembersResponse{ 
-    repeated MemberResponse members = 1;
+    repeated ShortMemberResponse members = 1;
     PaginationResponse pagination = 2;
+}
+
+message ShortMemberResponse{
+    string role = 2;
+    int32 level = 3;
 }
 
 message PaginationResponse{ 

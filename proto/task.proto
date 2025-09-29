@@ -11,8 +11,8 @@ service TaskService{
     rpc Task(TaskRequest) returns (TaskResponse);
     rpc Tasks(TasksRequest) returns (TasksResponse);
     rpc UpdateTask(UpdateTaskRequest) returns (TaskResponse);
-    rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty);
-    rpc Stats(StatsRequest) returns (StatsResponse);
+    rpc DeleteTask(TaskRequest) returns (google.protobuf.Empty);
+    rpc Stats(TasksStatsRequest) returns (TasksStatsResponse);
 }
 
 message CreateTaskRequest{ 
@@ -23,8 +23,8 @@ message CreateTaskRequest{
 message CreateTaskParams{ 
     string title = 1;
     string description = 2;
-    string status = 3;
-    string priority = 4;
+    string priority = 3;
+    bool private = 4;
     string deadline = 5;
     string group_id = 6;
     string assigned_to = 7;
@@ -35,7 +35,8 @@ message CreateTaskResponse{
 }
 
 message TaskRequest{ 
-    string id = 1;
+    string task_id = 1;
+    string user_id = 2;
 }
 
 message TaskResponse{ 
@@ -47,14 +48,16 @@ message TaskResponse{
     string description = 6;
     string status = 7;
     string priority = 8;
-    string deadline = 9;
-    string created_at = 10;
-    string updated_at = 11;
+    bool private = 9;
+    string deadline = 10;
+    string created_at = 11;
+    string updated_at = 12;
 }
 
 message TasksRequest{
-    optional string group_id = 1;
-    TasksFilterParams filter = 2;
+    string user_id = 1;
+    optional string group_id = 2;
+    TasksFilterParams filter = 3;
 }
 
 message TasksFilterParams{
@@ -81,7 +84,8 @@ message ShortTaskResponse{
     string title = 3;
     string status = 4;
     string priority = 5;
-    string deadline = 6;
+    bool private = 6;
+    string deadline = 7;
 }
 
 message PaginationResponse{ 
@@ -102,27 +106,23 @@ message UpdateTaskParams{
     optional string description = 2;
     optional string status = 3;
     optional string priority = 4;
-    optional string deadline = 5;
+    optional bool private = 5;
+    optional string deadline = 6;
 }
 
-message DeleteTaskRequest{ 
-    string task_id = 1;
-    string user_id = 2;
-}
-
-message StatsRequest{
+message TasksStatsRequest{
     string user_id = 1;
     optional string group_id = 2;
-    StatsParams params = 3;
+    TasksStatsParams params = 3;
 }
 
-message StatsParams{
+message TasksStatsParams{
     optional string priority = 1;
     optional string start_period = 2;
     optional string end_period = 3;
 }
 
-message StatsResponse{ 
+message TasksStatsResponse{ 
     int64 total = 1;
     int64 completed = 2;
     int64 in_progress = 3;

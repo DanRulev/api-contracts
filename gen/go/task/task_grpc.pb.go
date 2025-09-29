@@ -22,8 +22,8 @@ type TaskServiceClient interface {
 	Task(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*TaskResponse, error)
 	Tasks(ctx context.Context, in *TasksRequest, opts ...grpc.CallOption) (*TasksResponse, error)
 	UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*TaskResponse, error)
-	DeleteTask(ctx context.Context, in *DeleteTaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Stats(ctx context.Context, in *StatsRequest, opts ...grpc.CallOption) (*StatsResponse, error)
+	DeleteTask(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Stats(ctx context.Context, in *TasksStatsRequest, opts ...grpc.CallOption) (*TasksStatsResponse, error)
 }
 
 type taskServiceClient struct {
@@ -70,7 +70,7 @@ func (c *taskServiceClient) UpdateTask(ctx context.Context, in *UpdateTaskReques
 	return out, nil
 }
 
-func (c *taskServiceClient) DeleteTask(ctx context.Context, in *DeleteTaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *taskServiceClient) DeleteTask(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/danRulev.task_grpc.TaskService/DeleteTask", in, out, opts...)
 	if err != nil {
@@ -79,8 +79,8 @@ func (c *taskServiceClient) DeleteTask(ctx context.Context, in *DeleteTaskReques
 	return out, nil
 }
 
-func (c *taskServiceClient) Stats(ctx context.Context, in *StatsRequest, opts ...grpc.CallOption) (*StatsResponse, error) {
-	out := new(StatsResponse)
+func (c *taskServiceClient) Stats(ctx context.Context, in *TasksStatsRequest, opts ...grpc.CallOption) (*TasksStatsResponse, error) {
+	out := new(TasksStatsResponse)
 	err := c.cc.Invoke(ctx, "/danRulev.task_grpc.TaskService/Stats", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -96,8 +96,8 @@ type TaskServiceServer interface {
 	Task(context.Context, *TaskRequest) (*TaskResponse, error)
 	Tasks(context.Context, *TasksRequest) (*TasksResponse, error)
 	UpdateTask(context.Context, *UpdateTaskRequest) (*TaskResponse, error)
-	DeleteTask(context.Context, *DeleteTaskRequest) (*emptypb.Empty, error)
-	Stats(context.Context, *StatsRequest) (*StatsResponse, error)
+	DeleteTask(context.Context, *TaskRequest) (*emptypb.Empty, error)
+	Stats(context.Context, *TasksStatsRequest) (*TasksStatsResponse, error)
 	mustEmbedUnimplementedTaskServiceServer()
 }
 
@@ -117,10 +117,10 @@ func (UnimplementedTaskServiceServer) Tasks(context.Context, *TasksRequest) (*Ta
 func (UnimplementedTaskServiceServer) UpdateTask(context.Context, *UpdateTaskRequest) (*TaskResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTask not implemented")
 }
-func (UnimplementedTaskServiceServer) DeleteTask(context.Context, *DeleteTaskRequest) (*emptypb.Empty, error) {
+func (UnimplementedTaskServiceServer) DeleteTask(context.Context, *TaskRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTask not implemented")
 }
-func (UnimplementedTaskServiceServer) Stats(context.Context, *StatsRequest) (*StatsResponse, error) {
+func (UnimplementedTaskServiceServer) Stats(context.Context, *TasksStatsRequest) (*TasksStatsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Stats not implemented")
 }
 func (UnimplementedTaskServiceServer) mustEmbedUnimplementedTaskServiceServer() {}
@@ -209,7 +209,7 @@ func _TaskService_UpdateTask_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _TaskService_DeleteTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteTaskRequest)
+	in := new(TaskRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -221,13 +221,13 @@ func _TaskService_DeleteTask_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/danRulev.task_grpc.TaskService/DeleteTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServiceServer).DeleteTask(ctx, req.(*DeleteTaskRequest))
+		return srv.(TaskServiceServer).DeleteTask(ctx, req.(*TaskRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _TaskService_Stats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StatsRequest)
+	in := new(TasksStatsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -239,7 +239,7 @@ func _TaskService_Stats_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/danRulev.task_grpc.TaskService/Stats",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServiceServer).Stats(ctx, req.(*StatsRequest))
+		return srv.(TaskServiceServer).Stats(ctx, req.(*TasksStatsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
