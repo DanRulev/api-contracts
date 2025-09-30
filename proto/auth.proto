@@ -42,6 +42,7 @@ message RefreshRequest{
 message DeleteRequest {
     string user_id = 1;
     string refresh_token = 2;
+    bool soft = 3;
 }
 
 
