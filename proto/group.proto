@@ -71,6 +71,8 @@ message PaginationResponse{
     int64 page = 2;
     int64 limit = 3;
     int64 total_pages = 4;
+    bool has_next_page = 5;
+    bool has_previous_page = 6;
 }
 
 message GroupRequest{ 
