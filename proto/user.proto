@@ -22,7 +22,7 @@ message CreateUserRequest{
     string first_name = 3;
     string last_name = 4;
     optional string avatar_url = 5;
-    string bio = 6;
+    optional string bio = 6;
     bool private_account = 7;
     bool private_groups = 8;
     bool private_tasks = 9;
