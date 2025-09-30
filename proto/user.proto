@@ -10,10 +10,9 @@ service UserService{
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
     rpc User(UserRequest) returns (UserResponse);
     rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
-    rpc PublicUser(UserRequest) returns (UserResponse);
     rpc BatchUsers(BatchUsersRequest) returns (BatchUsersResponse);
-    rpc RestoreUser(UserRequest) returns (google.protobuf.Empty);
-    rpc DeleteUser(UserRequest) returns (google.protobuf.Empty);
+    rpc RestoreUser(RestoreRequest) returns (google.protobuf.Empty);
+    rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
 }
 
 message CreateUserRequest{
@@ -35,6 +34,7 @@ message CreateUserResponse{
 
 message UserRequest{
     string user_id = 1;
+    bool public = 2;
 }
 
 message UserResponse{ 
@@ -50,6 +50,10 @@ message UserResponse{
     bool private_groups = 10;
     bool private_tasks = 11;
     bool notifications = 12;
+}
+
+message RestoreRequest{ 
+    string user_id = 1;
 }
 
 message UpdateUserRequest{ 
@@ -81,6 +85,11 @@ message ShortUserResponse{
     string id = 1;
     string username = 2;
     optional string avatar_url = 3;
+}
+
+message DeleteUserRequest{ 
+    string id = 1;
+    bool soft = 2;
 }
 
 

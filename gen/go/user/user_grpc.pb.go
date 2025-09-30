@@ -21,10 +21,9 @@ type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	User(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
-	PublicUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	BatchUsers(ctx context.Context, in *BatchUsersRequest, opts ...grpc.CallOption) (*BatchUsersResponse, error)
-	RestoreUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	RestoreUser(ctx context.Context, in *RestoreRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userServiceClient struct {
@@ -62,15 +61,6 @@ func (c *userServiceClient) UpdateUser(ctx context.Context, in *UpdateUserReques
 	return out, nil
 }
 
-func (c *userServiceClient) PublicUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/danRulev.user_grpc.UserService/PublicUser", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userServiceClient) BatchUsers(ctx context.Context, in *BatchUsersRequest, opts ...grpc.CallOption) (*BatchUsersResponse, error) {
 	out := new(BatchUsersResponse)
 	err := c.cc.Invoke(ctx, "/danRulev.user_grpc.UserService/BatchUsers", in, out, opts...)
@@ -80,7 +70,7 @@ func (c *userServiceClient) BatchUsers(ctx context.Context, in *BatchUsersReques
 	return out, nil
 }
 
-func (c *userServiceClient) RestoreUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userServiceClient) RestoreUser(ctx context.Context, in *RestoreRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/danRulev.user_grpc.UserService/RestoreUser", in, out, opts...)
 	if err != nil {
@@ -89,7 +79,7 @@ func (c *userServiceClient) RestoreUser(ctx context.Context, in *UserRequest, op
 	return out, nil
 }
 
-func (c *userServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/danRulev.user_grpc.UserService/DeleteUser", in, out, opts...)
 	if err != nil {
@@ -105,10 +95,9 @@ type UserServiceServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	User(context.Context, *UserRequest) (*UserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UserResponse, error)
-	PublicUser(context.Context, *UserRequest) (*UserResponse, error)
 	BatchUsers(context.Context, *BatchUsersRequest) (*BatchUsersResponse, error)
-	RestoreUser(context.Context, *UserRequest) (*emptypb.Empty, error)
-	DeleteUser(context.Context, *UserRequest) (*emptypb.Empty, error)
+	RestoreUser(context.Context, *RestoreRequest) (*emptypb.Empty, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -125,16 +114,13 @@ func (UnimplementedUserServiceServer) User(context.Context, *UserRequest) (*User
 func (UnimplementedUserServiceServer) UpdateUser(context.Context, *UpdateUserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUserServiceServer) PublicUser(context.Context, *UserRequest) (*UserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PublicUser not implemented")
-}
 func (UnimplementedUserServiceServer) BatchUsers(context.Context, *BatchUsersRequest) (*BatchUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchUsers not implemented")
 }
-func (UnimplementedUserServiceServer) RestoreUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserServiceServer) RestoreUser(context.Context, *RestoreRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RestoreUser not implemented")
 }
-func (UnimplementedUserServiceServer) DeleteUser(context.Context, *UserRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
@@ -204,24 +190,6 @@ func _UserService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_PublicUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).PublicUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/danRulev.user_grpc.UserService/PublicUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).PublicUser(ctx, req.(*UserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _UserService_BatchUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BatchUsersRequest)
 	if err := dec(in); err != nil {
@@ -241,7 +209,7 @@ func _UserService_BatchUsers_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _UserService_RestoreUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(RestoreRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -253,13 +221,13 @@ func _UserService_RestoreUser_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/danRulev.user_grpc.UserService/RestoreUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).RestoreUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).RestoreUser(ctx, req.(*RestoreRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+	in := new(DeleteUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -271,7 +239,7 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/danRulev.user_grpc.UserService/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).DeleteUser(ctx, req.(*UserRequest))
+		return srv.(UserServiceServer).DeleteUser(ctx, req.(*DeleteUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -291,10 +259,6 @@ var _UserService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUser",
 			Handler:    _UserService_UpdateUser_Handler,
-		},
-		{
-			MethodName: "PublicUser",
-			Handler:    _UserService_PublicUser_Handler,
 		},
 		{
 			MethodName: "BatchUsers",
